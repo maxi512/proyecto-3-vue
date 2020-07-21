@@ -11,7 +11,6 @@
                 <input
                     type="radio"
                     value="name"
-                    @change="onChangeRadioButton($event)"
                     v-model="searchFor"
                 />
                 <span>Name</span>
@@ -23,7 +22,6 @@
                     name="group1"
                     type="radio"
                     value="artist"
-                    @change="onChangeRadioButton($event)"
                     v-model="searchFor"
                 />
                 <span>Artist</span>
@@ -34,7 +32,6 @@
                 <input
                     type="radio"
                     value="year"
-                    @change="onChangeRadioButton($event)"
                     v-model="searchFor"
                 />
                 <span>Year</span>
@@ -95,21 +92,20 @@ export default {
             albums: [],
             currentAPIPage: 1,
             myalbumsAPI: "http://127.0.0.1:8000/api/albums?page=",
-            page: 1,
             loading: false,
             show: true,
             showTable: false,
             selectedAlbum: null,
             search: "",
-            searchFor: "name",
-            labelInput: "Name",
+            searchFor: "name"
         };
     },
+    computed:{
+        labelInput: function(){
+           return this.searchFor.charAt(0).toUpperCase() + this.searchFor.slice(1);
+        }
+    },
     methods: {
-        onChangeRadioButton(event) {
-            const value = event.target.value;
-            this.labelInput = value.charAt(0).toUpperCase() + value.slice(1);
-        },
         getAlbums() {
             axios
                 .get(this.myalbumsAPI + this.currentAPIPage)
