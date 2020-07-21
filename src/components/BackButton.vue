@@ -1,5 +1,7 @@
 <template>
-    <a  href="#!" class="material-icons  cyan-text text-darken-4 large" style="font-size: 2.5rem" @click="showCards()">arrow_back</a>
+    <a  href="#!" class="hoverable" @click="showCards()">
+        <i class="material-icons cyan-text text-darken-4" style="font-size: 2.5rem;">arrow_back</i>
+        </a>
 </template>
 
 <script>

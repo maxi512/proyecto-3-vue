@@ -1,5 +1,5 @@
 <template>
-	<div class="card">
+	<div class="card hoverable">
 		<div class="card-image">
 			<img :src="`data:image/jpg;base64,${album.image}`" width="300" height="300"/>
 			<a class="btn-floating halfway-fab waves-effect waves-light red" @click="hideCards()">
