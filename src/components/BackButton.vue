@@ -1,5 +1,5 @@
 <template>
-    <a class="waves-effect waves-light btn" @click="showCards()">Back</a>
+    <a  href="#!" class="material-icons  cyan-text text-darken-4 large" style="font-size: 2.5rem" @click="showCards()">arrow_back</a>
 </template>
 
 <script>

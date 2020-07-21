@@ -3,7 +3,7 @@
 		<div class="card-image">
 			<img :src="`data:image/jpg;base64,${album.image}`" width="300" height="300"/>
 			<a class="btn-floating halfway-fab waves-effect waves-light red" @click="hideCards()">
-			<i class="material-icons">info</i>
+			<i class="material-icons">music_note</i>
 			</a>
 		</div>
 		<div class="card-content">
