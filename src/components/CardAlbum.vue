@@ -6,13 +6,12 @@
 			<i class="material-icons">music_note</i>
 			</a>
 		</div>
-		<div class="card-content">
-			<span class="card-title">{{album.name}}</span>
+		<div class="card-content ">
+			<span class="card-title text-collapse">{{album.name}}</span>
 			<span v-for="(item,index) in album.artists" v-bind:key="item.id">
 				<span v-if="index == album.artists.length - 1">
-					{{item.name}}.
+				{{item.name}}.
 				</span>
-				<span v-else>{{item.name}}, </span>
 			</span>
 			<p>{{album.year}}</p>
 		</div>
@@ -33,6 +32,13 @@ export default {
 
 
 <style>
+.text-collapse {
+    display:inline-block;
+    width:100%;
+    white-space: nowrap;
+    overflow:hidden !important;
+    text-overflow: ellipsis;
+}
 </style>
 
 
