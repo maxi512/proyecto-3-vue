@@ -23,7 +23,7 @@
                 </div>
                 <div class="col s4">
                      <div class="row"></div>  
-                                          <div class="row"></div>    
+                     <div class="row"></div>    
   
                     <p class="center-align">
                         <label>
@@ -57,7 +57,6 @@
                     </p>
                 </div>
         </div>
-
         <div class="row">
             <transition-group name="slide-fade">
                 <div
@@ -72,15 +71,18 @@
                     ></card-album>
                 </div>
             </transition-group>
-
             <transition name="slide-fade-table">
                 <div v-if="showTable">
                     <table-album v-bind:album="selectedAlbum"></table-album>
                 </div>
             </transition>
-            <ul class="pagination">
+            
+        </div>
+        <div class="row">
+            <div class="col s4 offset-s4 center-align">
+                <ul class="pagination">
                 <li class="waves-effect">
-                    <a href="#!" @click="prevPage">
+                    <a href="#!" @click="prevPage" v-show="currentAPIPage > 1">
                         <i class="material-icons">chevron_left</i>
                     </a>
                 </li>
@@ -88,11 +90,12 @@
                     <a>{{ currentAPIPage }}</a>
                 </li>
                 <li class="waves-effect">
-                    <a href="#!" @click="nextPage">
+                    <a href="#!" @click="nextPage" v-show="currentAPIPage < lastPage">
                         <i class="material-icons">chevron_right</i>
                     </a>
                 </li>
             </ul>
+            </div>
         </div>
     </div>
 </template>
@@ -114,6 +117,7 @@ export default {
         return {
             albums: [],
             currentAPIPage: 1,
+            lastPage: 1,
             myalbumsAPI: "http://127.0.0.1:8000/api/albums?page=",
             loading: false,
             show: true,
@@ -136,6 +140,7 @@ export default {
                 .get(this.myalbumsAPI + this.currentAPIPage)
                 .then((response) => {
                     this.albums = response.data.data;
+                    this.lastPage = response.data.meta.last_page
                 })
                 .catch((e) => console.log(e));
         },
