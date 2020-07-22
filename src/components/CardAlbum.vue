@@ -20,6 +20,8 @@ export default {
 	props: ["album"],
 	methods: {
 		hideCards() {
+
+
 			this.$emit("update-current-album", this.album);
 		}
 	}

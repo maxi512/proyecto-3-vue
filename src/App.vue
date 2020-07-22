@@ -1,76 +1,99 @@
 <template>
-    <div class="row">
-        <back-button v-on:show-cards="showCards()"></back-button>
-
-        <div class="input-field col s12">
-            <input id="finder" type="text" class="validate" v-model="search" />
-            <label for="finder" id="labelInput">{{ labelInput }}</label>
+    <div>
+        <div class="row valign-wrapper">
+                <div class="col s4">
+                    <h2>My Albums</h2>
+                    <back-button v-on:show-cards="showCards()"></back-button>
+                </div>
+                <div class="col s4">
+                    <div class="row"></div>
+                    <div class="row"></div>
+                    <div class="input-field col s12 flow-text">
+                            <input
+                                id="finder"
+                                type="text"
+                                class="validate"
+                                v-model="search"
+                            />
+                            <label for="finder" id="labelInput">{{
+                                labelInput
+                            }}</label>
+                        </div>
+                    <div class="row"></div>     
+                </div>
+                <div class="col s4">
+                     <div class="row"></div>  
+                                          <div class="row"></div>    
+  
+                    <p class="center-align">
+                        <label>
+                            <input
+                                type="radio"
+                                value="name"
+                                v-model="searchFor"
+                            />
+                            <span>Name</span>
+                        </label>
+                    </p>
+                    <p class="center-align">
+                        <label>
+                            <input
+                                type="radio"
+                                value="artist"
+                                v-model="searchFor"
+                            />
+                            <span>Artist</span>
+                        </label>
+                    </p>
+                    <p class="center-align">
+                        <label>
+                            <input
+                                type="radio"
+                                value="year"
+                                v-model="searchFor"
+                            />
+                            <span>Year</span>
+                        </label>
+                    </p>
+                </div>
         </div>
-        <p>
-            <label>
-                <input
-                    type="radio"
-                    value="name"
-                    v-model="searchFor"
-                />
-                <span>Name</span>
-            </label>
-        </p>
-        <p>
-            <label>
-                <input
-                    name="group1"
-                    type="radio"
-                    value="artist"
-                    v-model="searchFor"
-                />
-                <span>Artist</span>
-            </label>
-        </p>
-        <p>
-            <label>
-                <input
-                    type="radio"
-                    value="year"
-                    v-model="searchFor"
-                />
-                <span>Year</span>
-            </label>
-        </p>
-        <transition-group name="slide-fade">
-            <div
-                class="col s12 m4"
-                v-for="album in albums"
-                :key="album.id"
-                v-show="show"
-            >
-                <card-album
-                    v-bind:album="album"
-                    v-on:update-current-album="showTableAlbum"
-                ></card-album>
-            </div>
-        </transition-group>
 
-        <transition name="slide-fade-table">
-            <div v-if="showTable">
-                <table-album v-bind:album="selectedAlbum"></table-album>
-            </div>
-        </transition>
-        <ul class="pagination">
-            <li class="waves-effect">
-                <a href="#!" @click="prevPage">
-                    <i class="material-icons">chevron_left</i>
-                </a>
-            </li>
-            <li class="active">
-                <a>{{ currentAPIPage }}</a>
-            </li>
-            <li class="waves-effect">
-                <a href="#!" @click="nextPage">
-                    <i class="material-icons">chevron_right</i>
-                </a>
-            </li>
-        </ul>
+        <div class="row">
+            <transition-group name="slide-fade">
+                <div
+                    class="col s12 m4"
+                    v-for="album in albums"
+                    :key="album.id"
+                    v-show="show"
+                >
+                    <card-album
+                        v-bind:album="album"
+                        v-on:update-current-album="showTableAlbum"
+                    ></card-album>
+                </div>
+            </transition-group>
+
+            <transition name="slide-fade-table">
+                <div v-if="showTable">
+                    <table-album v-bind:album="selectedAlbum"></table-album>
+                </div>
+            </transition>
+            <ul class="pagination">
+                <li class="waves-effect">
+                    <a href="#!" @click="prevPage">
+                        <i class="material-icons">chevron_left</i>
+                    </a>
+                </li>
+                <li class="active">
+                    <a>{{ currentAPIPage }}</a>
+                </li>
+                <li class="waves-effect">
+                    <a href="#!" @click="nextPage">
+                        <i class="material-icons">chevron_right</i>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 </template>
 
@@ -97,13 +120,15 @@ export default {
             showTable: false,
             selectedAlbum: null,
             search: "",
-            searchFor: "name"
+            searchFor: "name",
         };
     },
-    computed:{
-        labelInput: function(){
-           return this.searchFor.charAt(0).toUpperCase() + this.searchFor.slice(1);
-        }
+    computed: {
+        labelInput: function() {
+            return (
+                this.searchFor.charAt(0).toUpperCase() + this.searchFor.slice(1)
+            );
+        },
     },
     methods: {
         getAlbums() {
@@ -128,7 +153,7 @@ export default {
             };
         },
 
-        updateAlbums(val){
+        updateAlbums(val) {
             if (val == "") {
                 this.currentAPIPage = 1;
                 this.myalbumsAPI = "http://127.0.0.1:8000/api/albums?page=";
@@ -142,7 +167,6 @@ export default {
                     "?page=";
             }
             this.getAlbums();
-            
         },
         showTableAlbum(data) {
             this.show = false;
@@ -167,9 +191,8 @@ export default {
     watch: {
         search: function(val) {
             this.debounce(() => {
-                this.updateAlbums(val)
+                this.updateAlbums(val);
             }, 500)();
-           
         },
     },
     mounted() {
@@ -205,5 +228,11 @@ export default {
 /* .slide-fade-leave-active below version 2.1.8 */ {
     transform: translateX(200px);
     opacity: 0;
+}
+
+.row .col{
+margin-bottom: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
