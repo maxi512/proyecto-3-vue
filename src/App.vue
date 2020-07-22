@@ -118,7 +118,7 @@ export default {
             albums: [],
             currentAPIPage: 1,
             lastPage: 1,
-            myalbumsAPI: "http://127.0.0.1:8000/api/albums?page=",
+            myalbumsAPI: "https://myalbumsiaw.herokuapp.com/api/albums?page=",
             loading: false,
             show: true,
             showTable: false,
@@ -136,6 +136,7 @@ export default {
     },
     methods: {
         getAlbums() {
+            console.log(this.myalbumsAPI + this.currentAPIPage)
             axios
                 .get(this.myalbumsAPI + this.currentAPIPage)
                 .then((response) => {
@@ -161,11 +162,11 @@ export default {
         updateAlbums(val) {
             if (val == "") {
                 this.currentAPIPage = 1;
-                this.myalbumsAPI = "http://127.0.0.1:8000/api/albums?page=";
+                this.myalbumsAPI = "https://myalbumsiaw.herokuapp.com/api/albums?page=";
             } else {
                 this.currentAPIPage = 1;
                 this.myalbumsAPI =
-                    "http://127.0.0.1:8000/api/albums/" +
+                    "https://myalbumsiaw.herokuapp.com/api/albums/" +
                     this.searchFor +
                     "/" +
                     this.search +
