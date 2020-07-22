@@ -7,8 +7,13 @@
 			</a>
 		</div>
 		<div class="card-content">
-			<p>{{album.name}}</p>
-			<p v-for="artist in album.artists" v-bind:key="artist.id">{{artist.name}}</p>
+			<span class="card-title">{{album.name}}</span>
+			<span v-for="(item,index) in album.artists" v-bind:key="item.id">
+				<span v-if="index == album.artists.length - 1">
+					{{item.name}}.
+				</span>
+				<span v-else>{{item.name}}, </span>
+			</span>
 			<p>{{album.year}}</p>
 		</div>
 	</div>
@@ -20,8 +25,6 @@ export default {
 	props: ["album"],
 	methods: {
 		hideCards() {
-
-
 			this.$emit("update-current-album", this.album);
 		}
 	}
