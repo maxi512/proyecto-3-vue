@@ -1,62 +1,31 @@
 <template>
     <div>
         <div class="row valign-wrapper">
-                <div class="col s4">
-                    <h2>My Albums</h2>
-                    <back-button v-on:show-cards="showCards()"></back-button>
+            <div class="col s4">
+                <h2>My Albums</h2>
+                <back-button v-on:show-cards="showCards()" v-show="showTable"></back-button>
+            </div>
+            <div class="col s4">
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="input-field col s12 flow-text">
+                    <input
+                        id="finder"
+                        type="text"
+                        class="validate"
+                        v-model="search"
+                    />
+                    <label for="finder" id="labelInput">{{ labelInput }}</label>
                 </div>
-                <div class="col s4">
-                    <div class="row"></div>
-                    <div class="row"></div>
-                    <div class="input-field col s12 flow-text">
-                            <input
-                                id="finder"
-                                type="text"
-                                class="validate"
-                                v-model="search"
-                            />
-                            <label for="finder" id="labelInput">{{
-                                labelInput
-                            }}</label>
-                        </div>
-                    <div class="row"></div>     
-                </div>
-                <div class="col s4">
-                     <div class="row"></div>  
-                     <div class="row"></div>    
-  
-                    <p class="center-align">
-                        <label>
-                            <input
-                                type="radio"
-                                value="name"
-                                v-model="searchFor"
-                            />
-                            <span>Name</span>
-                        </label>
-                    </p>
-                    <p class="center-align">
-                        <label>
-                            <input
-                                type="radio"
-                                value="artist"
-                                v-model="searchFor"
-                            />
-                            <span>Artist</span>
-                        </label>
-                    </p>
-                    <p class="center-align">
-                        <label>
-                            <input
-                                type="radio"
-                                value="year"
-                                v-model="searchFor"
-                            />
-                            <span>Year</span>
-                        </label>
-                    </p>
-                </div>
+                <div class="row"></div>
+            </div>
+            <div class="col s4">
+                <div class="row"></div>
+                <div class="row"></div>
+                <radio-group @update-search-for="updateSearchFor"></radio-group>
+            </div>
         </div>
+        <preloader v-bind:loading="loading"></preloader>
         <div class="row">
             <transition-group name="slide-fade">
                 <div
@@ -76,27 +45,13 @@
                     <table-album v-bind:album="selectedAlbum"></table-album>
                 </div>
             </transition>
-            
         </div>
-        <div class="row">
-            <div class="col s4 offset-s4 center-align">
-                <ul class="pagination">
-                <li class="waves-effect">
-                    <a href="#!" @click="prevPage" v-show="currentAPIPage > 1">
-                        <i class="material-icons">chevron_left</i>
-                    </a>
-                </li>
-                <li class="active">
-                    <a>{{ currentAPIPage }}</a>
-                </li>
-                <li class="waves-effect">
-                    <a href="#!" @click="nextPage" v-show="currentAPIPage < lastPage">
-                        <i class="material-icons">chevron_right</i>
-                    </a>
-                </li>
-            </ul>
-            </div>
-        </div>
+        <paginator
+            v-bind:currentAPIPage="currentAPIPage"
+            v-bind:lastPage="lastPage"
+            v-on:update-page="updatePage"
+            v-show="show"
+        ></paginator>
     </div>
 </template>
 
@@ -105,6 +60,9 @@ import axios from "axios";
 import TableAlbum from "./components/TableAlbum.vue";
 import CardAlbum from "./components/CardAlbum.vue";
 import BackButton from "./components/BackButton.vue";
+import Preloader from "./components/Preloader.vue";
+import Paginator from "./components/Paginator.vue";
+import RadioGroup from "./components/RadioGroup.vue";
 
 export default {
     name: "App",
@@ -112,6 +70,9 @@ export default {
         TableAlbum,
         CardAlbum,
         BackButton,
+        preloader: Preloader,
+        paginator: Paginator,
+        RadioGroup
     },
     data() {
         return {
@@ -136,12 +97,15 @@ export default {
     },
     methods: {
         getAlbums() {
-            console.log(this.myalbumsAPI + this.currentAPIPage)
+            this.loading = true;
+            this.show = false;
             axios
                 .get(this.myalbumsAPI + this.currentAPIPage)
                 .then((response) => {
+                    this.loading = false;
                     this.albums = response.data.data;
-                    this.lastPage = response.data.meta.last_page
+                    this.lastPage = response.data.meta.last_page;
+                    this.show = true;
                 })
                 .catch((e) => console.log(e));
         },
@@ -158,20 +122,16 @@ export default {
                 if (immediate && !self.timeout) func.apply(context, args);
             };
         },
-
         updateAlbums(val) {
-            if (val == "") {
-                this.currentAPIPage = 1;
-                this.myalbumsAPI = "https://myalbumsiaw.herokuapp.com/api/albums?page=";
-            } else {
-                this.currentAPIPage = 1;
-                this.myalbumsAPI =
-                    "https://myalbumsiaw.herokuapp.com/api/albums/" +
-                    this.searchFor +
-                    "/" +
-                    this.search +
-                    "?page=";
-            }
+            this.myalbumsAPI =
+                val == ""
+                    ? "https://myalbumsiaw.herokuapp.com/api/albums?page="
+                    : "https://myalbumsiaw.herokuapp.com/api/albums/" +
+                      this.searchFor +
+                      "/" +
+                      this.search +
+                      "?page=";
+            this.currentAPIPage = 1;
             this.getAlbums();
         },
         showTableAlbum(data) {
@@ -183,16 +143,13 @@ export default {
             this.show = true;
             this.showTable = false;
         },
-        prevPage() {
-            this.loading = true;
-            this.currentAPIPage--;
-            this.getAlbums();
+        updatePage(apiPage){
+            this.currentAPIPage = apiPage
+            this.getAlbums()
         },
-        nextPage() {
-            this.loading = true;
-            this.currentAPIPage++;
-            this.getAlbums();
-        },
+        updateSearchFor(searchString){
+            this.searchFor = searchString
+        }
     },
     watch: {
         search: function(val) {
@@ -208,8 +165,6 @@ export default {
 </script>
 
 <style>
-/* Enter and leave animations can use different */
-/* durations and timing functions.              */
 .slide-fade-enter-active {
     transition: all 0.4s ease;
     transition-delay: 0.4s;
@@ -217,28 +172,24 @@ export default {
 .slide-fade-leave-active {
     transition: all 0.4s cubic-bezier(1, 0.8, 0.8, 1);
 }
-.slide-fade-enter, .slide-fade-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
+.slide-fade-enter, .slide-fade-leave-to {
     transform: translateX(200px);
     opacity: 0;
 }
 
-/* Enter and leave animations can use different */
-/* durations and timing functions.              */
 .slide-fade-table-enter-active {
     transition: all 0.4s ease;
     transition-delay: 0.3s;
 }
 
-.slide-fade-table-enter
-/* .slide-fade-leave-active below version 2.1.8 */ {
+.slide-fade-table-enter {
     transform: translateX(200px);
     opacity: 0;
 }
 
-.row .col{
-margin-bottom: auto;
-  margin-left: auto;
-  margin-right: auto;
+.row .col {
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 </style>
