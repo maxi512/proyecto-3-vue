@@ -9,13 +9,7 @@
                 <div class="row"></div>
                 <div class="row"></div>
                 <div class="input-field col s12 flow-text">
-                    <input
-                        id="finder"
-                        type="text"
-                        class="validate"
-                        v-model="search"
-                    />
-                    <label for="finder" id="labelInput">{{ labelInput }}</label>
+                    <input id="last_name" :placeholder="labelInput" type="text" class="validate">
                 </div>
                 <div class="row"></div>
             </div>
