@@ -9,7 +9,7 @@
                 <div class="row"></div>
                 <div class="row"></div>
                 <div class="input-field col s12 flow-text">
-                    <input id="last_name" :placeholder="labelInput" type="text" class="validate">
+                    <input id="last_name" :placeholder="labelInput" v-model="search" type="text" class="validate">
                 </div>
                 <div class="row"></div>
             </div>
@@ -93,6 +93,7 @@ export default {
         getAlbums() {
             this.loading = true;
             this.show = false;
+            console.log(this.myalbumsAPI + this.currentAPIPage)
             axios
                 .get(this.myalbumsAPI + this.currentAPIPage)
                 .then((response) => {
@@ -126,6 +127,7 @@ export default {
                       this.search +
                       "?page=";
             this.currentAPIPage = 1;
+            console.log(this.myalbumsAPI + this.currentAPIPage)
             this.getAlbums();
         },
         showTableAlbum(data) {

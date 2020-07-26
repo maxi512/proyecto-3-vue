@@ -2,19 +2,19 @@
     <div>
         <p class="center-align">
             <label>
-                <input type="radio" value="name" @click="updateSearchFor" checked/>
+                <input type="radio" name="group1" value="name" @click="updateSearchFor" checked/>
                 <span>Name</span>
             </label>
         </p>
         <p class="center-align">
             <label>
-                <input type="radio" value="artist" @click="updateSearchFor" />
+                <input type="radio" name="group1" value="artist" @click="updateSearchFor" />
                 <span>Artist</span>
             </label>
         </p>
         <p class="center-align">
             <label>
-                <input type="radio" value="year" @click="updateSearchFor" />
+                <input type="radio" name="group1" value="year" @click="updateSearchFor" />
                 <span>Year</span>
             </label>
         </p>
