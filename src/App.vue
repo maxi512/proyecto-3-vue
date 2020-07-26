@@ -93,7 +93,6 @@ export default {
         getAlbums() {
             this.loading = true;
             this.show = false;
-            console.log(this.myalbumsAPI + this.currentAPIPage)
             axios
                 .get(this.myalbumsAPI + this.currentAPIPage)
                 .then((response) => {
@@ -127,7 +126,6 @@ export default {
                       this.search +
                       "?page=";
             this.currentAPIPage = 1;
-            console.log(this.myalbumsAPI + this.currentAPIPage)
             this.getAlbums();
         },
         showTableAlbum(data) {
