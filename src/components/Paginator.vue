@@ -7,7 +7,7 @@
                         <i class="material-icons">chevron_left</i>
                     </a>
                 </li>
-                <li class="active">
+                <li class="active deep-purple darken-2">
                     <a>{{ currentAPIPage }}</a>
                 </li>
                 <li class="waves-effect">

@@ -2,14 +2,14 @@
 	<div class="card hoverable">
 		<div class="card-image">
 			<img :src="`data:image/jpg;base64,${album.image}`" width="300" height="300"/>
-			<a class="btn-floating halfway-fab waves-effect waves-light red hoverable" @click="hideCards()">
+			<a class="btn-floating halfway-fab waves-effect waves-light red hoverable deep-purple darken-2" @click="hideCards()">
 			<i class="material-icons">music_note</i>
 			</a>
 		</div>
 		<div class="card-content">
 			<span class="card-title text-collapse">{{album.name}}</span>
 			<span v-for="(item,index) in album.artists" v-bind:key="item.id">
-				<span v-if="index == album.artists.length - 1">
+				<span v-if="index == 0">
 				{{item.name}}.
 				</span>
 			</span>

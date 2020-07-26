@@ -1,5 +1,5 @@
 <template>
-    <a  href="#!" class="hoverable" @click="showCards()">
+    <a  href="#!" @click="showCards()">
         <i class="material-icons cyan-text text-darken-4" style="font-size: 2.5rem;">arrow_back</i>
         </a>
 </template>
